@@ -29,7 +29,7 @@ request.interceptors.request.use(function (config) {
     // 第一次登录token已经保存了这里只会出现响应拦截器错误,请求是不会出错的
     const user = store.state.user;
     if (user) {
-        config.headers.Authorization = user.token;
+        config.headers.Authorization = `Bearer ${user.token}`;
     }
     return config;
 }, function (error) {
@@ -46,7 +46,7 @@ request.interceptors.response.use(function (response) {
     if (error.response && error.response.status === 401) {
         //  token过期判断是否有刷新token
         const user = store.state.user;
-        if (!user || !user.state.user) {
+        if (!user || !user.refresh_token) {
             router.push('/login')
             return
         }
@@ -57,7 +57,7 @@ request.interceptors.response.use(function (response) {
                 method: "PUT",
                 url: '/app/v1_0/authorizations',
                 headers: {
-                    Authorization: `Bearer${user.refresh_token}`
+                    Authorization: `Bearer ${user.refresh_token}`
                 }
             })
             //  利用刷新token获取token成功

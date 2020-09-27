@@ -1,7 +1,11 @@
 <template>
   <div class="login">
     <!-- 导航 -->
-    <van-nav-bar class="page_nav_bar" title="登录" />
+    <van-nav-bar class="page_nav_bar" title="登录">
+      <template #left>
+        <van-icon name="cross" @click="$router.back()" />
+      </template>
+    </van-nav-bar>
     <!-- 登录表单 -->
     <van-form ref="loginForm" @submit="onSubmit">
       <van-field
@@ -10,6 +14,7 @@
         name="mobile"
         placeholder="请输入手机号"
         :rules="userFormRules.mobile"
+        :maxlength="11"
       >
         <template #left-icon>
           <i class="iconfont icon-shouji"></i>
@@ -20,6 +25,7 @@
         name="code"
         placeholder="请输入验证码"
         :rules="userFormRules.code"
+        :maxlength="6"
       >
         <template #left-icon>
           <i class="iconfont icon-yanzhengma"></i>
@@ -39,6 +45,7 @@
             type="default"
             round
             size="mini"
+            native-type="button"
             >发送验证码</van-button
           >
         </template>
@@ -53,6 +60,7 @@
 </template>
 
 <script>
+// 这种解构如果多起来也可以挂原型
 import { login, getSmsCode } from "@/server/user.js";
 export default {
   name: "login",
@@ -104,6 +112,7 @@ export default {
         //  这里要储存token
         this.$store.commit("setUser", res.data);
         this.$toast.success("登录成功");
+        this.$router.back();
       } catch (err) {
         if (err.response.status == 400) {
           console.log("登录失败", err);

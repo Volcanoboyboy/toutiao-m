@@ -4,6 +4,7 @@ body {
 .page_nav_bar {
   background-color: #3296fa !important;
 }
-.page_nav_bar .van-nav-bar__title {
+.page_nav_bar .van-nav-bar__title,
+.page_nav_bar .van-icon {
   color: #fff;
 }
