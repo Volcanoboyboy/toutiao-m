@@ -14,12 +14,13 @@
     </van-nav-bar>
     <!-- 频道列表 -->
     <van-tabs class="channel_tabs" v-model="active" swipeable line-height="1px">
-      <van-tab title="标签 1">内容 1</van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab
+        v-for="channel in channels"
+        :title="channel.name"
+        :key="channel.id"
+      >
+        <article-list :channel="channel"></article-list>
+      </van-tab>
       <template #nav-right>
         <div class="placehoder"></div>
         <div class="more_btn">
@@ -32,12 +33,17 @@
 
 <script>
 import { getUserChannels } from "@/server/user.js";
+import ArticleList from "@/components/content/ArticleList.vue";
 export default {
   name: "home",
+  components: {
+    ArticleList,
+  },
   data() {
     return {
       active: 0,
       //  频道数据
+      //  这里为了减少请求对文章列表可以封装一个组件出来,实现懒加载,将channels传过去就可以了,在文章列表内部
       channels: [],
     };
   },
@@ -47,9 +53,14 @@ export default {
   methods: {
     async loadChannels() {
       try {
+        // 后期在这里还要处理一下,在编辑频道的时候要将频道数组存到本地,以便下次访问的时候可以快速渲染频道减少ajax
+        // 等到写编辑频道的时候再来改这里
         const res = await getUserChannels();
-        console.log(res, "频道列表");
-      } catch (err) {}
+        console.log(res);
+        this.channels = res.data.data.channels;
+      } catch (err) {
+        this.$toast("获取频道列表失败");
+      }
     },
   },
 };
