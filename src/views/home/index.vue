@@ -23,21 +23,42 @@
       </van-tab>
       <template #nav-right>
         <div class="placehoder"></div>
-        <div class="more_btn">
+        <div class="more_btn" @click="isChannelEditShow = true">
           <i class="iconfont icon-gengduo"></i>
         </div>
       </template>
     </van-tabs>
+
+    <!-- 弹出层 -->
+    <!-- 这是利用弹出层然后包住频道列表组件 -->
+    <van-popup
+      v-model="isChannelEditShow"
+      round
+      closeable
+      close-icon-position="top-left"
+      position="bottom"
+      :style="{ height: '95%' }"
+    >
+      <!-- 这中间显示频道编辑组件 -->
+      <channel-edit
+        :userChannels="channels"
+        :active-index.sync="active"
+        @close-popup="isChannelEditShow = false"
+        :active="active"
+      ></channel-edit>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import ChannelEdit from "@/components/content/ChannelEdit.vue";
 import { getUserChannels } from "@/server/user.js";
 import ArticleList from "@/components/content/ArticleList.vue";
 export default {
   name: "home",
   components: {
     ArticleList,
+    ChannelEdit,
   },
   data() {
     return {
@@ -45,6 +66,9 @@ export default {
       //  频道数据
       //  这里为了减少请求对文章列表可以封装一个组件出来,实现懒加载,将channels传过去就可以了,在文章列表内部
       channels: [],
+
+      // 编辑频道显示
+      isChannelEditShow: false,
     };
   },
   created() {

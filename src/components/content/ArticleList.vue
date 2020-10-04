@@ -64,7 +64,6 @@ export default {
           timestamp: this.timestamp || Date.now(),
           with_top: 1,
         });
-        console.log(res, "文章列表数据");
         this.list.push(...res.data.data.results);
         this.loading = false;
         const { results } = res.data.data;
@@ -88,6 +87,7 @@ export default {
         });
 
         const { results } = res.data.data;
+        // 这个逻辑不太合理,所谓刷新应该要直接更新所有数据而不是添加到头部
         this.list.unshift(...results);
         this.isreFreshLoading = false;
         this.successText = `刷新成功,更新了${results.length}条数据`;

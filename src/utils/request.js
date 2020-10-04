@@ -28,7 +28,8 @@ const request = axios.create({
 request.interceptors.request.use(function (config) {
     // 第一次登录token已经保存了这里只会出现响应拦截器错误,请求是不会出错的
     const user = store.state.user;
-    if (user) {
+    //  登录的请求是不需要token的
+    if (user && user.token) {
         config.headers.Authorization = `Bearer ${user.token}`;
     }
     return config;

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getItem, setItem } from '@/utils/storeage.js'
+import { getItem, setItem, removeItem } from '@/utils/storeage.js'
 
 Vue.use(Vuex)
 

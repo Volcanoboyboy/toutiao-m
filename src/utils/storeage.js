@@ -12,6 +12,7 @@ export const getItem = name => {
 
 //  储存
 export const setItem = (name, value) => {
+    //  这个判断条件是有缺陷的,因为null也是object类型
     if (typeof value === 'object') {
         value = JSON.stringify(value)
     }
