@@ -56,7 +56,7 @@ import {
   deleteUserChannel,
 } from "@/server/article.js";
 import { mapState } from "vuex";
-import { setItem } from "@/utils/storeage.js";
+import { setItem, getItem } from "@/utils/storeage.js";
 /**
  * 这里还要实现一个就是保存用户收藏的频道,无论是否登录,登录就保存在线上,未登录就保存在本地储存上面,以便下次不登录也可以访问自己收藏的频道,增加用户的体验
  */
@@ -91,31 +91,6 @@ export default {
      * 如果设置了首页可以在不登录的情况下访问,本地储存的频道才有效果
      */
     async loadAllChannles() {
-      //   try {
-      //     let channels = [];
-      //     if (this.user) {
-      //       // 已登录，请求获取线上的频道数据
-      //       const { data } = await getChannels();
-      //       channels = data.data.channels;
-      //     } else {
-      //       // 未登录
-      //       const localChannels = getItem("channels");
-      //       if (localChannels) {
-      //         // 有本地频道数据，则使用
-      //         channels = localChannels;
-      //       } else {
-      //         // 没有本地频道数据，则请求获取默认推荐的频道列表
-      //         const { data } = await getChannels();
-      //         channels = data.data.channels;
-      //       }
-      //     }
-
-      //     // 将数据更新到组件中
-      //     this.channels = channels;
-      //   } catch (err) {
-      //     console.log(err);
-      //     this.$toast("数据获取失败");
-      //   }
       try {
         const { data: res } = await getAllChannels();
         this.allChannels = res.data.channels;
