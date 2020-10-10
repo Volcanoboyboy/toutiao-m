@@ -64,4 +64,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.suggestion_container {
+  /deep/ span.active {
+    color: #3296fa;
+  }
+}
 </style>

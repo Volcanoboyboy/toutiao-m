@@ -13,12 +13,11 @@
         error-text="请求失败,点击重新加载"
         @load="onLoad"
       >
-        <!-- 这里展示的组件还是太简单了,想个性化展示还是需要封装一个articleItem组件,后面写 -->
-        <!-- 这个组件要在后面做好各个子路由以后才好写 -->
-        <van-cell
+        <!-- 这里展示的组件还是太简单了,想个性化展示还是需要封装一个articleItem组件 -->
+        <article-item
           v-for="(artcile, index) in list"
           :key="index"
-          :title="artcile.title"
+          :article="artcile"
         />
       </van-list>
     </van-pull-refresh>
@@ -27,8 +26,12 @@
 
 <script>
 import { getArticles } from "@/server/article.js";
+import ArticleItem from "./ArticleItem";
 export default {
   name: "articleList",
+  components: {
+    ArticleItem,
+  },
   data() {
     return {
       list: [],
@@ -105,8 +108,10 @@ export default {
   position: fixed;
   top: 180px;
   bottom: 100px;
+  // 这里是用于记录列表的滚动位置,因为默认所有的文章组件都是在滚动body
   overflow-y: auto;
   right: 0;
   left: 0;
+  height: 79vh;
 }
 </style>

@@ -1,26 +1,23 @@
 import axios from 'axios'
 import router from '../router'
 import store from '../store'
+// JSONBig是用来处理js大数精度不准的问题
+import JSONBig from 'json-bigint'
 
 //  配置request的基准路径
 const request = axios.create({
-    baseURL: "http://ttapi.research.itcast.cn/"
+    baseURL: "http://ttapi.research.itcast.cn/",
+
+    // `transformResponse` 在传递给 then/catch 前，允许修改响应数据
+    transformResponse: [function (data) {
+        // 对 data 进行任意转换处理
+        try {
+            return JSONBig.parse(data)
+        } catch (err) {
+            return data;
+        }
+    }],
 })
-
-
-/**
- * 不知这个配置是干什么的???????
- * 配置处理后端返回数据中超出 js 安全整数范围问题
- */
-// request.defaults.transformResponse = [
-//     function (data) {
-//         try {
-//             return jsonBig.parse(data);
-//         } catch (err) {
-//             return {};
-//         }
-//     }
-// ];
 
 
 //  这里主要是用来处理token访问以及token过期利用刷新token获取新的token
@@ -28,10 +25,13 @@ const request = axios.create({
 request.interceptors.request.use(function (config) {
     // 第一次登录token已经保存了这里只会出现响应拦截器错误,请求是不会出错的
     const user = store.state.user;
-    //  登录的请求是不需要token的
-    if (user && user.token) {
+    // 这个是刷新token的api
+    if (config.url.includes('/app/v1_0/authorizations')) {
+        config.headers.Authorization = `Bearer ${user.refresh_token}`
+    } else if (user && user.token) {
         config.headers.Authorization = `Bearer ${user.token}`;
     }
+
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -42,7 +42,6 @@ request.interceptors.request.use(function (config) {
 request.interceptors.response.use(function (response) {
     return response;
 }, async function (error) {
-    console.log(error, 'token报错');
     // token过期响应出错在这里
     if (error.response && error.response.status === 401) {
         //  token过期判断是否有刷新token

@@ -13,7 +13,7 @@
           <span class="name">{{ userInfo.name }}</span>
         </div>
         <div class="right">
-          <van-button size="mini">编辑用户资料</van-button>
+          <van-button size="mini" to="/user/profile">编辑用户资料</van-button>
         </div>
       </div>
 
@@ -120,7 +120,7 @@ export default {
     async loadUserInfo() {
       try {
         const res = await getUserInfo();
-        console.log(res, "我自己的信息");
+        // console.log(res, "我自己的信息");
         this.userInfo = res.data.data;
       } catch (err) {
         this.$toast("获取用户信息失败,请稍后重试");

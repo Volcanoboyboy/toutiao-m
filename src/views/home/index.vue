@@ -81,7 +81,6 @@ export default {
         // 后期在这里还要处理一下,在编辑频道的时候要将频道数组存到本地,以便下次访问的时候可以快速渲染频道减少ajax
         // 等到写编辑频道的时候再来改这里
         const res = await getUserChannels();
-        console.log(res);
         this.channels = res.data.data.channels;
       } catch (err) {
         this.$toast("获取频道列表失败");
