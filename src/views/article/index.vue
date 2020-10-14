@@ -202,15 +202,23 @@ export default {
         this.article = res.data;
 
         // 异步处理图片预览,要等文章内容dom都加载完了才能获取到所有的图片元素
-        setTimeout(() => {
+        // 这里还有一种处理方法,就是使用nextTick,等渲染完再操作
+        // setTimeout(() => {
+        //   this.previewImage();
+        // }, 0);
+
+        this.isLoading = false;
+
+        // 这个写法更好一些,定时器始终是有延迟的,最少4ms
+        // 但是用这个要注意loading的位置,loading会影响ref的渲染
+        this.$nextTick(() => {
           this.previewImage();
-        }, 0);
+        });
       } catch (err) {
         if (err.response && err.response.status === 404) {
           this.errStatus = 404;
         }
       }
-      this.isLoading = false;
     },
     // 文章中图片预览
     previewImage() {
@@ -220,6 +228,8 @@ export default {
 
       // 利用ImagePreview这个组件需要传入预览图片的地址数组,还可以控制起始图片位置
       const images = [];
+
+      // 这里最好是使用事件委托,委托到contentDom上面,然后判断一下点击的对象是不是img
       imgs.forEach((img, index) => {
         images.push(img.src);
 

@@ -10,7 +10,12 @@ module.exports = {
             rootValue({ file }) {
                 return file.indexOf('vant') !== -1 ? 37.5 : 75
             },
-            propList: ['*'] //  配置所有css属性
+            propList: ['*'], //  配置所有css属性
+
+            //  配置需要转换的样式资源
+            //  因为我们利用github——markdown.css但是从pc搬到移动端,字体就很小,这个时候就需要排除这个文件
+            //  当然实际是有设计稿的,没有这个操作
+            exclude: /github-markdown/
         }
     }
 }

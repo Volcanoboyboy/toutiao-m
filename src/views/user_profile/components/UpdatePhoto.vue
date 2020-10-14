@@ -9,6 +9,8 @@
 </template>
 
 <script>
+// cropper是需要同时导入js和样式
+import "cropperjs/dist/cropper.css";
 import Cropper from "cropperjs";
 import { updateUserPhoto } from "@/server/user";
 export default {
@@ -57,9 +59,11 @@ export default {
         // 如果Content-Type是application/json,这个时候就传输普通对象格式数据
         // 这里要记住FomrData的实例添加数据的方法,很重要
         const formData = new FormData();
+        //  这里名字要和接口参数一致才可以
         formData.append("photo", blob);
 
         const { data: res } = await updateUserPhoto(formData);
+        console.log(res);
 
         // 这里点击完成的时候也要触发close事件,让父组件关闭弹窗
         this.$emit("close");
@@ -96,9 +100,9 @@ export default {
       color: #fff;
     }
   }
-}
-.img {
-  display: block;
-  max-width: 100%;
+  .img {
+    display: block;
+    max-width: 100%;
+  }
 }
 </style>

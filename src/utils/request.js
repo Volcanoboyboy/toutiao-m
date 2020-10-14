@@ -9,9 +9,14 @@ const request = axios.create({
     baseURL: "http://ttapi.research.itcast.cn/",
 
     // `transformResponse` 在传递给 then/catch 前，允许修改响应数据
+    // 这个就是在修改axios的解析方式,axios默认是使用JSON.parse()来解析的
+    /**
+     * data后端返回的原始数据,还没做处理,但是data不一定是标准格式的JSON,这个时候我们原封不动的返回这个data,就不解析了
+     */
     transformResponse: [function (data) {
         // 对 data 进行任意转换处理
         try {
+            //  如果我们使用了,JSONBig.parse()解析,那最好也使用JSONBig.stringify来序列化
             return JSONBig.parse(data)
         } catch (err) {
             return data;
@@ -66,6 +71,8 @@ request.interceptors.response.use(function (response) {
                 refresh_token: user.refresh_token
             })
             //  这里的error.config包含上一次用户的请求method和url等,继续发出去完成上一次token过期的请求
+            //  这里还有一个注意的点,就是要返回这个promise,但是如果返回的是一个普通的值是作为正确的值
+            //  如果返回的是一个promise就是作为then的返回值,这样才能被后续链式调用接收到,不然链式调用就断了
             return request(error.config)
         } catch (err) {
             router.push({ name: 'login' })

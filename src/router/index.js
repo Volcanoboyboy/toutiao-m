@@ -17,7 +17,10 @@ const routes = [
       {
         path: '/home',
         name: 'home',
-        component: () => import('@/views/home')
+        component: () => import('@/views/home'),
+        meta: {
+          keepAlive: true
+        }
       },
       {
         path: '/qa',

@@ -20,6 +20,12 @@
     >
       <van-image class="avatar" fit="cover" round :src="user.photo" />
     </van-cell>
+    <!-- 昵称 -->
+    <van-cell title="昵称" is-link value="内容"></van-cell>
+    <!-- 性别 -->
+    <van-cell title="性别" is-link value="内容"></van-cell>
+    <!-- 生日 -->
+    <van-cell title="生日" is-link value="内容"></van-cell>
 
     <!-- 拉起的对应弹窗 -->
     <!-- 编辑用户头像窗口 -->
@@ -36,6 +42,7 @@
         @update-photo="user.photo = $event"
       />
     </van-popup>
+    <!-- /编辑用户头像窗口 -->
   </div>
 </template>
 
@@ -75,6 +82,8 @@ export default {
       // URL.createObjectURL() 静态方法会创建一个 DOMString，其中包含一个表示参数中给出的对象的URL
       this.img = window.URL.createObjectURL(file);
       this.isChangeAvatarPopShow = true;
+
+      // 这里要注意,如果不清空,两次选择同一个文件的时候是不会触发change事件的
       this.$refs.file.value = "";
     },
   },

@@ -61,7 +61,7 @@ export const getUserProfile = id => {
 export const updateUserPhoto = data => {
     return request({
         method: 'PATCH',
-        url: '/app/v1_0/user/phot',
+        url: '/app/v1_0/user/photo',
         data
     })
 }

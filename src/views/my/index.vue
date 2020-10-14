@@ -4,12 +4,7 @@
     <div v-if="user" class="header user_info">
       <div class="base_info">
         <div class="left">
-          <van-image
-            round
-            class="avatar"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
-            fit="cover"
-          />
+          <van-image round class="avatar" :src="userInfo.photo" fit="cover" />
           <span class="name">{{ userInfo.name }}</span>
         </div>
         <div class="right">
